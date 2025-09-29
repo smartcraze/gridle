@@ -18,13 +18,6 @@ const animateStars = (stars: { x: number; y: number }[], speed = 0.5) => {
   })
 }
 
-const spawnObstacle = () => ({
-  x: Math.random() * (width - 50),
-  y: -50, // start above arena
-  width: 50,
-  height: 50,
-})
-
 const stars = animateStars(generateStars(100))
 
 const Arena = ({ children }: { children?: React.ReactNode }) => {

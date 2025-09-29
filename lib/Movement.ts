@@ -9,7 +9,7 @@ export const MovementSystem = (entities: any, { time }: any) => {
     const [currentX, currentY] = entities.player.position
 
     // Space physics constants
-    const thrusterForce = 300 // How strong the thrusters are
+    const thrusterForce = 800 // How strong the thrusters are
     const friction = 0.98 // Space friction (very minimal, like 2% energy loss per frame)
     const deltaTime = time.delta / 1000 // Convert to seconds
     const bounceRestitution = 0.7 // How much energy is retained after bouncing

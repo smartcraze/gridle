@@ -15,11 +15,10 @@ const Game = () => {
   const [score, setScore] = useState(0)
   const [health, setHealth] = useState(100)
 
-  // Score timer - increase score over time
   useEffect(() => {
     const scoreInterval = setInterval(() => {
       setScore((prev) => prev + 10)
-    }, 1000)
+    }, 10000)
 
     return () => clearInterval(scoreInterval)
   }, [])
@@ -28,7 +27,11 @@ const Game = () => {
     if (gameEngineRef.current) {
       const entities = gameEngineRef.current.state.entities
       if (entities.player) {
-        entities.player.velocity = direction
+        const speedMultiplier = 1 // <-- adjust this to make player faster
+        entities.player.velocity = {
+          x: direction.x * speedMultiplier,
+          y: direction.y * speedMultiplier,
+        }
       }
     }
   }
