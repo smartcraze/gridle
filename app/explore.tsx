@@ -58,47 +58,41 @@ const TimelineItemComponent = ({
   item: TimelineItem
   index: number
 }) => {
-  const isEven = index % 2 === 0
-
   return (
-    <View className="mb-8 relative">
+    <View className="mb-10 relative px-6">
       {/* Timeline line */}
-      <View className="absolute left-1/2 top-0 bottom-0 w-0.5 bg-blue-400 -ml-px" />
+      <View className="absolute left-8 top-0 bottom-0 w-1 bg-blue-400 -ml-px" />
 
       {/* Timeline dot */}
-      <View className="absolute left-1/2 top-6 w-4 h-4 bg-blue-500 rounded-full border-4 border-white shadow-lg -ml-2 z-10" />
+      <View className="absolute left-6 top-8 w-6 h-6 bg-blue-500 rounded-full border-4 border-white shadow-lg z-10" />
 
       {/* Content */}
-      <View
-        className={`flex-row ${isEven ? 'justify-start' : 'justify-end'} px-4`}
-      >
-        <View className={`w-5/12 ${isEven ? 'mr-auto pr-8' : 'ml-auto pl-8'}`}>
-          <View className="bg-white rounded-lg shadow-lg p-4 border border-gray-100">
-            {/* Date */}
-            <Text className="text-sm font-semibold text-blue-600 mb-2">
-              {formatDate(item.date)}
-            </Text>
+      <View className="ml-12">
+        <View className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
+          {/* Date */}
+          <Text className="text-base font-semibold text-blue-600 mb-4">
+            {formatDate(item.date)}
+          </Text>
 
-            {/* Image */}
-            <View className="mb-3 rounded-lg overflow-hidden">
-              <Image
-                source={imageMap[item.image]}
-                style={{ width: '100%', height: 120 }}
-                contentFit="cover"
-                transition={300}
-              />
-            </View>
-
-            {/* Title */}
-            <Text className="text-lg font-bold text-gray-800 mb-2 leading-tight">
-              {item.title}
-            </Text>
-
-            {/* Description */}
-            <Text className="text-sm text-gray-600 leading-relaxed">
-              {item.description}
-            </Text>
+          {/* Image */}
+          <View className="mb-5 rounded-xl overflow-hidden">
+            <Image
+              source={imageMap[item.image]}
+              style={{ width: '100%', height: 180 }}
+              contentFit="cover"
+              transition={300}
+            />
           </View>
+
+          {/* Title */}
+          <Text className="text-xl font-bold text-gray-800 mb-4 leading-snug">
+            {item.title}
+          </Text>
+
+          {/* Description */}
+          <Text className="text-base text-gray-600 leading-relaxed">
+            {item.description}
+          </Text>
         </View>
       </View>
     </View>
@@ -110,11 +104,11 @@ export default function Explore() {
     <SafeAreaView className="flex-1 bg-gray-50">
       {/* Header */}
       <View className="bg-white shadow-sm border-b border-gray-100">
-        <View className="px-6 py-4">
-          <Text className="text-2xl font-bold text-gray-800 text-center">
+        <View className="px-6 py-6">
+          <Text className="text-3xl font-bold text-gray-800 text-center">
             ISS Timeline
           </Text>
-          <Text className="text-sm text-gray-600 text-center mt-1">
+          <Text className="text-base text-gray-600 text-center mt-2">
             Journey through the history of the International Space Station
           </Text>
         </View>
@@ -124,16 +118,16 @@ export default function Explore() {
       <ScrollView
         className="flex-1"
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingVertical: 20 }}
+        contentContainerStyle={{ paddingVertical: 30, paddingBottom: 50 }}
       >
         {timelineData.map((item: TimelineItem, index: number) => (
           <TimelineItemComponent key={index} item={item} index={index} />
         ))}
 
         {/* End marker */}
-        <View className="items-center mt-8 mb-4">
-          <View className="w-6 h-6 bg-blue-500 rounded-full border-4 border-white shadow-lg" />
-          <Text className="text-sm text-gray-500 mt-2 font-medium">
+        <View className="items-center mt-12 mb-8 px-6">
+          <View className="w-8 h-8 bg-blue-500 rounded-full border-4 border-white shadow-lg" />
+          <Text className="text-base text-gray-500 mt-4 font-medium">
             Timeline Complete
           </Text>
         </View>
