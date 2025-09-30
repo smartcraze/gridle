@@ -102,18 +102,6 @@ const TimelineItemComponent = ({
 export default function Explore() {
   return (
     <SafeAreaView className="flex-1 bg-gray-50">
-      {/* Header */}
-      <View className="bg-white shadow-sm border-b border-gray-100">
-        <View className="px-6 py-6">
-          <Text className="text-3xl font-bold text-gray-800 text-center">
-            ISS Timeline
-          </Text>
-          <Text className="text-base text-gray-600 text-center mt-2">
-            Journey through the history of the International Space Station
-          </Text>
-        </View>
-      </View>
-
       {/* Timeline */}
       <ScrollView
         className="flex-1"
