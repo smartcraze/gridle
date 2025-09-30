@@ -1,3 +1,4 @@
+import AstronautsScreen from '@/app/astronauts'
 import ExploreScreen from '@/app/explore'
 import HomeScreen from '@/app/index'
 import ISSLocationScreen from '@/app/iss-location'
@@ -30,6 +31,11 @@ export default function Menubar() {
           name="NASAAPOD"
           component={NASAAPODScreen}
           options={{ title: 'NASA Picture of the Day' }}
+        />
+        <Drawer.Screen
+          name="Astronauts"
+          component={AstronautsScreen}
+          options={{ title: 'Astronauts in Space' }}
         />
       </Drawer.Navigator>
     </GestureHandlerRootView>
