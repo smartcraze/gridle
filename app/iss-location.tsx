@@ -33,7 +33,7 @@ const MapView = ({
       <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
       <script>
         // Initialize map
-        var map = L.map('map').setView([${latitude}, ${longitude}], 4);
+        var map = L.map('map').setView([${latitude}, ${longitude}], 2);
         
         // Add OpenStreetMap tiles
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -53,7 +53,7 @@ const MapView = ({
         issMarker.bindPopup('<b>International Space Station</b><br>Lat: ${latitude.toFixed(4)}<br>Lng: ${longitude.toFixed(4)}');
         
         // Center map on ISS
-        map.setView([${latitude}, ${longitude}], 4);
+        map.setView([${latitude}, ${longitude}], 2);
       </script>
     </body>
     </html>
