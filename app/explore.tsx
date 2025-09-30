@@ -1,6 +1,6 @@
 import { Image } from 'expo-image'
-import React from 'react'
-import { Dimensions, ScrollView, Text, View } from 'react-native'
+import React, { useRef } from 'react'
+import { Animated, Dimensions, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import timelineData from '../assets/json/timeline.json'
 
@@ -60,12 +60,6 @@ const TimelineItemComponent = ({
 }) => {
   return (
     <View className="mb-10 relative px-6">
-      {/* Timeline line */}
-      <View className="absolute left-8 top-0 bottom-0 w-1 bg-blue-400 -ml-px" />
-
-      {/* Timeline dot */}
-      <View className="absolute left-6 top-8 w-6 h-6 bg-blue-500 rounded-full border-4 border-white shadow-lg z-10" />
-
       {/* Content */}
       <View className="ml-12">
         <View className="bg-white rounded-xl shadow-lg p-6 border border-gray-100">
@@ -100,26 +94,51 @@ const TimelineItemComponent = ({
 }
 
 export default function Explore() {
+  const scrollY = useRef(new Animated.Value(0)).current
+  const { height } = Dimensions.get('window')
+
   return (
     <SafeAreaView className="flex-1 bg-gray-50">
       {/* Timeline */}
-      <ScrollView
-        className="flex-1"
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingVertical: 30, paddingBottom: 50 }}
-      >
-        {timelineData.map((item: TimelineItem, index: number) => (
-          <TimelineItemComponent key={index} item={item} index={index} />
-        ))}
+      <View className="flex-1 relative">
+        {/* Continuous Timeline Line */}
+        <View className="absolute left-8 top-0 bottom-0 w-1 bg-blue-400 z-10" />
 
-        {/* End marker */}
-        <View className="items-center mt-12 mb-8 px-6">
-          <View className="w-8 h-8 bg-blue-500 rounded-full border-4 border-white shadow-lg" />
-          <Text className="text-base text-gray-500 mt-4 font-medium">
-            Timeline Complete
-          </Text>
-        </View>
-      </ScrollView>
+        <Animated.ScrollView
+          className="flex-1"
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{ paddingVertical: 30, paddingBottom: 50 }}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+            { useNativeDriver: false }
+          )}
+          scrollEventThrottle={16}
+        >
+          {timelineData.map((item: TimelineItem, index: number) => (
+            <TimelineItemComponent key={index} item={item} index={index} />
+          ))}
+
+          {/* End marker */}
+          <View className="items-center mt-12 mb-8 px-6">
+            <View className="w-8 h-8 bg-blue-500 rounded-full border-4 border-white shadow-lg" />
+            <Text className="text-base text-gray-500 mt-4 font-medium">
+              Timeline Complete
+            </Text>
+          </View>
+        </Animated.ScrollView>
+
+        {/* Moving Timeline Dot */}
+        <Animated.View
+          className="absolute left-5 w-6 h-6 bg-blue-500 rounded-full border-4 border-white shadow-lg z-20"
+          style={{
+            top: scrollY.interpolate({
+              inputRange: [0, height * 10], // Adjust this range based on your content height
+              outputRange: [60, height * 0.35], // Start position and end position
+              extrapolate: 'extend',
+            }),
+          }}
+        />
+      </View>
     </SafeAreaView>
   )
 }
