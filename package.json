@@ -58,7 +58,8 @@
     "rn-icon-mapper": "^0.0.1",
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^3.4.0",
-    "three": "^0.166.1"
+    "three": "^0.166.1",
+    "three-globe": "^2.44.0"
   },
   "devDependencies": {
     "@types/react": "~19.1.0",

@@ -4,8 +4,6 @@ import { Animated, Dimensions, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import timelineData from '../assets/json/timeline.json'
 
-const { width } = Dimensions.get('window')
-
 interface TimelineItem {
   date: string
   title: string
@@ -13,7 +11,6 @@ interface TimelineItem {
   image: string
 }
 
-// Static image mapping to avoid dynamic require
 const imageMap: { [key: string]: any } = {
   'img1.jpg': require('../assets/images/img1.jpg'),
   'img2.jpg': require('../assets/images/img2.jpg'),
