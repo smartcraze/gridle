@@ -51,7 +51,7 @@ The project reads a NASA API key from `.env.local` via `react-native-dotenv`.
 - Example `.env.local` (already present in your repo):
 
   ```text
-  NASA_API=YOUR_REAL_KEY_HERE
+  EXPO_PUBLIC_NASA_API_KEY=YOUR_REAL_KEY_HERE
   ```
 
 If the key is not set the app falls back to NASA's `DEMO_KEY` which has strict rate limits.
@@ -99,13 +99,3 @@ Open the app and navigate via the drawer to each page. The following quick check
 ## License
 
 This repository doesn't include a license file. Add one if you plan to publish the code.
-
----
-
-If you'd like I can:
-
-- add a CONTRIBUTING.md with development conventions,
-- wire E2E tests for key flows (timeline and APOD), or
-- convert the Leaflet WebView into a native map component.
-
-Tell me which one you want next and I'll implement it.

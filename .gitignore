@@ -1,8 +1,9 @@
 # Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
-
+.env
 # dependencies
 node_modules/
-
+.env*.local
+.env
 # Expo
 .expo/
 dist/
@@ -41,3 +42,5 @@ app-example
 # generated native folders
 /ios
 /android
+.env
+.env
