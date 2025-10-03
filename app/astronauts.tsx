@@ -1,6 +1,14 @@
+import { Ionicons } from '@expo/vector-icons'
 import React, { useEffect, useState } from 'react'
-import { RefreshControl, ScrollView, Text, View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import {
+  ActivityIndicator,
+  Pressable,
+  RefreshControl,
+  SafeAreaView,
+  ScrollView,
+  Text,
+  View,
+} from 'react-native'
 
 interface Astronaut {
   craft: string
@@ -30,10 +38,9 @@ export default function AstronautsScreen() {
       } else {
         setError('Failed to fetch astronaut data')
       }
-      setLoading(false)
-      setRefreshing(false)
     } catch (err) {
       setError('Failed to fetch astronaut data')
+    } finally {
       setLoading(false)
       setRefreshing(false)
     }
@@ -49,37 +56,45 @@ export default function AstronautsScreen() {
   }, [])
 
   // Group astronauts by spacecraft
-  const groupedAstronauts =
-    astronautData?.people.reduce(
-      (acc, astronaut) => {
-        if (!acc[astronaut.craft]) {
-          acc[astronaut.craft] = []
-        }
-        acc[astronaut.craft].push(astronaut)
-        return acc
-      },
-      {} as Record<string, Astronaut[]>
-    ) || {}
+  const groupedAstronauts = astronautData?.people.reduce(
+    (groups, astronaut) => {
+      const craft = astronaut.craft
+      if (!groups[craft]) {
+        groups[craft] = []
+      }
+      groups[craft].push(astronaut)
+      return groups
+    },
+    {} as Record<string, Astronaut[]>
+  )
 
   if (loading) {
     return (
       <SafeAreaView className="flex-1 bg-black">
         <View className="flex-1 justify-center items-center">
-          <Text className="text-white text-lg">
-            Loading astronauts in space...
-          </Text>
+          <ActivityIndicator size="large" color="#FFFFFF" />
+          <Text className="text-white text-lg mt-4">Loading Astronauts</Text>
         </View>
       </SafeAreaView>
     )
   }
 
-  if (error || !astronautData) {
+  if (error) {
     return (
       <SafeAreaView className="flex-1 bg-black">
-        <View className="flex-1 justify-center items-center px-4">
-          <Text className="text-red-500 text-lg text-center">
-            {error || 'No data available'}
+        <View className="flex-1 justify-center items-center px-6">
+          <Ionicons name="warning-outline" size={48} color="#EF4444" />
+          <Text className="text-white text-xl font-medium mt-4 mb-2">
+            Connection Failed
           </Text>
+          <Text className="text-gray-400 text-center mb-6">{error}</Text>
+
+          <Pressable
+            onPress={fetchAstronauts}
+            className="bg-white px-6 py-3 rounded-lg"
+          >
+            <Text className="text-black font-medium">Try Again</Text>
+          </Pressable>
         </View>
       </SafeAreaView>
     )
@@ -88,76 +103,94 @@ export default function AstronautsScreen() {
   return (
     <SafeAreaView className="flex-1 bg-black">
       <ScrollView
-        className="flex-1 px-4 py-4"
+        className="flex-1"
+        showsVerticalScrollIndicator={false}
         refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor="#FFFFFF"
+          />
         }
       >
         {/* Header */}
-        <View className="mb-6">
-          <Text className="text-white text-3xl font-bold text-center mb-2">
-            Astronauts in Space
-          </Text>
-          <Text className="text-gray-400 text-center text-lg">
-            Currently {astronautData.number} people in space
+        <View className="px-6 pt-6 pb-4">
+          <View className="flex-row items-center mb-2">
+            <Ionicons name="people" size={24} color="#FFFFFF" />
+            <Text className="text-white text-2xl font-semibold ml-3">
+              Astronauts in Space
+            </Text>
+          </View>
+          <Text className="text-gray-400 text-base leading-6">
+            {astronautData?.number} people currently in space
           </Text>
         </View>
 
-        {/* Spacecraft Groups */}
-        {Object.entries(groupedAstronauts).map(([craft, astronauts]) => (
-          <View key={craft} className="mb-6">
-            {/* Spacecraft Name */}
-            <View className="bg-blue-900 rounded-t-lg px-4 py-3">
-              <Text className="text-white text-xl font-bold">
-                {craft === 'ISS' ? 'International Space Station (ISS)' : craft}
-              </Text>
-              <Text className="text-blue-200 text-sm">
-                {astronauts.length} astronaut
-                {astronauts.length !== 1 ? 's' : ''}
-              </Text>
-            </View>
-
-            {/* Astronaut List */}
-            <View className="bg-gray-900 rounded-b-lg">
-              {astronauts.map((astronaut, index) => (
-                <View
-                  key={`${astronaut.name}-${index}`}
-                  className={`px-4 py-3 flex-row items-center ${
-                    index !== astronauts.length - 1
-                      ? 'border-b border-gray-700'
-                      : ''
-                  }`}
-                >
-                  {/* Astronaut Icon */}
-                  <View className="w-10 h-10 bg-blue-600 rounded-full items-center justify-center mr-3">
-                    <Text className="text-white font-bold text-lg">
-                      {astronaut.name
-                        .split(' ')
-                        .map((n) => n[0])
-                        .join('')}
-                    </Text>
-                  </View>
-
-                  {/* Astronaut Info */}
-                  <View className="flex-1">
-                    <Text className="text-white text-lg font-medium">
-                      {astronaut.name}
-                    </Text>
-                  </View>
-                </View>
-              ))}
+        {/* Stats Card */}
+        <View className="px-6 mb-6">
+          <View className="bg-gray-900 p-5 rounded-xl border border-gray-800">
+            <View className="flex-row items-center justify-between">
+              <View>
+                <Text className="text-gray-400 text-sm mb-1">
+                  Total Astronauts
+                </Text>
+                <Text className="text-white text-3xl font-bold">
+                  {astronautData?.number}
+                </Text>
+              </View>
+              <View className="bg-green-500/20 p-3 rounded-full">
+                <Ionicons name="rocket" size={24} color="#10B981" />
+              </View>
             </View>
           </View>
-        ))}
+        </View>
 
-        {/* Footer */}
-        <View className="mt-4 mb-6 pt-4 border-t border-gray-700">
-          <Text className="text-gray-500 text-center text-sm">
-            Data from Open Notify API
+        {/* Spacecraft Groups */}
+        {groupedAstronauts &&
+          Object.entries(groupedAstronauts).map(([craft, astronauts]) => (
+            <View key={craft} className="px-6 mb-6">
+              <Text className="text-white text-lg font-medium mb-4">
+                {craft}
+              </Text>
+
+              <View className="bg-gray-900 rounded-xl border border-gray-800 overflow-hidden">
+                {astronauts.map((astronaut, index) => (
+                  <View
+                    key={`${astronaut.name}-${index}`}
+                    className={`p-4 ${index !== astronauts.length - 1 ? 'border-b border-gray-800' : ''}`}
+                  >
+                    <View className="flex-row items-center">
+                      <View className="bg-blue-500/20 p-2 rounded-full mr-3">
+                        <Ionicons name="person" size={16} color="#3B82F6" />
+                      </View>
+                      <View className="flex-1">
+                        <Text className="text-white font-medium">
+                          {astronaut.name}
+                        </Text>
+                        <Text className="text-gray-400 text-sm">
+                          Crew Member
+                        </Text>
+                      </View>
+                    </View>
+                  </View>
+                ))}
+              </View>
+            </View>
+          ))}
+
+        {/* Info Section */}
+        <View className="px-6 pb-6">
+          <Text className="text-white text-lg font-medium mb-4">
+            About This Data
           </Text>
-          <Text className="text-gray-500 text-center text-xs mt-1">
-            Pull down to refresh
-          </Text>
+          <View className="bg-gray-900 p-5 rounded-xl border border-gray-800">
+            <Text className="text-gray-300 text-sm leading-6">
+              Real-time data from the Open Notify API showing all astronauts
+              currently aboard spacecraft in Earth orbit and beyond. This
+              includes crew members on the International Space Station and other
+              active missions.
+            </Text>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
