@@ -1,4 +1,3 @@
-import { NASA_API } from '@env'
 import React, { useEffect, useState } from 'react'
 import { Dimensions, Image, ScrollView, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -23,7 +22,9 @@ export default function NASAAPODScreen() {
 
   const fetchAPOD = async () => {
     try {
-      const apiKey = NASA_API
+      const apiKey = process.env.EXPO_PUBLIC_NASA_API_KEY!
+      console.log('Using NASA API Key:', apiKey)
+
       const response = await fetch(
         `https://api.nasa.gov/planetary/apod?api_key=${apiKey}`
       )
