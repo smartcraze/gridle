@@ -4,7 +4,7 @@ Gridle is a small Expo app built for exploring historical events around the Inte
 
 This README explains how to run the project locally, what pages are included, environment variables, and troubleshooting tips (PowerShell-friendly).
 
-## Features
+## Feature
 
 - Timeline of ISS historical events (scrollable, image-backed)
 - "Where is ISS?" — a map view showing the current ISS location (Leaflet in a WebView)
